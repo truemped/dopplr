@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 #
+import types
+
 from doppler.basequery import BaseQuery
 
 
@@ -25,10 +27,12 @@ class MoreLikeThisQuery(BaseQuery):
     """
 
     def __init__(self, fields, mintf=None, mindf=None, minwl=None, maxwl=None,
-            maxqt=None, maxntp=None, boost=False, qf=None, count=10):
+            maxqt=None, maxntp=None, boost=False, qf=None, count=None):
         """
         `fields` is a list of field names the mlt is based on.
         """
+        if not isinstance(fields, types.ListType):
+            raise TypeError('fields must be a list')
         self._fields = fields
         self._optional_params = {}
         self._optional_params['mintf'] = mintf
