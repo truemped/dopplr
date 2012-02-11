@@ -32,10 +32,10 @@ class FacettingQueries(Vows.Context):
             q = FacetQuery('foo')
             return q.get_params()
 
-        def FacetOnMustBePresent(self, topic):
-            expect(topic).to_include(('facet', 'on'))
+        def facetTrueMustBePresent(self, topic):
+            expect(topic).to_include(('facet', 'true'))
 
-        def FacetFieldMustBeCorrect(self, topic):
+        def facetFieldMustBeCorrect(self, topic):
             expect(topic).to_include(('facet.field', 'foo'))
 
         def theNumberOfParamsMatches(self, topic):
@@ -111,8 +111,8 @@ class MultiSelectFacettingQueries(Vows.Context):
             q = MultiselectFacetQuery('foo')
             return q.get_params()
 
-        def facetOnMustBePresent(self, topic):
-            expect(topic).to_include(('facet', 'on'))
+        def facetTrueMustBePresent(self, topic):
+            expect(topic).to_include(('facet', 'true'))
 
         def facetFieldMustBeCorrect(self, topic):
             expect(topic).to_include(('facet.field', 'foo'))
@@ -203,8 +203,8 @@ class ARangeFacetQuery(Vows.Context):
         def topic(self):
             return RangeFacetQuery('foo', 1, 2, 10).get_params()
 
-        def facetOnMustBePresent(self, topic):
-            expect(topic).to_include(('facet', 'on'))
+        def facetTrueMustBePresent(self, topic):
+            expect(topic).to_include(('facet', 'true'))
 
         def facetFieldMustBeCorrect(self, topic):
             expect(topic).to_include(('facet.range', 'foo'))

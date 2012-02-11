@@ -58,7 +58,7 @@ class FacetQuery(BaseQuery):
         Return the list of query params.
         """
         params = []
-        params.append(('facet', 'on'))
+        params.append(('facet', 'true'))
         params.append(('facet.field', self.__field))
 
         for p in self.__optional_params:
@@ -141,7 +141,7 @@ class RangeFacetQuery(BaseQuery):
         Compute the parameters for the `RangeFacetQuery`.
         """
         params = []
-        params.append(('facet', 'on'))
+        params.append(('facet', 'true'))
         params.append(('facet.range', self.__field))
 
         params.append(('f.%s.facet.range.start' % self.__field,
