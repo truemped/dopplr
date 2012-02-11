@@ -22,6 +22,7 @@ Facet queries for Apache Solr.
 See http://wiki.apache.org/solr/SimpleFacetParameters for details.
 """
 from doppler.basequery import BaseQuery
+from doppler.solr.query.query import FilterQuery
 
 
 class FacetQuery(BaseQuery):
@@ -68,11 +69,12 @@ class FacetQuery(BaseQuery):
 
         if self.__value:
             if self.__tag:
-                value = '{!tag=%s}%s:%s' % (self.__field, self.__field,
-                    self.__value)
+                params.extend(FilterQuery(
+                    '%s:%s' % (self.__field, self.__value),
+                    tag=self.__field).get_params())
             else:
-                value = '%s:%s' % (self.__field, self.__value)
-            params.append(('fq', value))
+                params.extend(FilterQuery(
+                    '%s:%s' % (self.__field, self.__value)).get_params())
 
         return params
 
@@ -156,10 +158,11 @@ class RangeFacetQuery(BaseQuery):
 
         if self.__value:
             if self.__tag:
-                value = '{!tag=%s}%s:%s' % (self.__field, self.__field,
-                    self.__value)
+                params.extend(FilterQuery(
+                    '%s:%s' % (self.__field, self.__value),
+                    tag=self.__field).get_params())
             else:
-                value = '%s:%s' % (self.__field, self.__value)
-            params.append(('fq', value))
+                params.extend(FilterQuery(
+                    '%s:%s' % (self.__field, self.__value)).get_params())
 
         return params
