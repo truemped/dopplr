@@ -13,3 +13,4 @@ parts
 pylint*
 .coverage
 build/
+docs-build/
