@@ -15,8 +15,8 @@ setup(
     version = "0.1.0",
     description = "Doppler is a Tornado based client library for Solr and ElasticSearch",
     author = "Daniel Truemper",
-    author_email = "truemper@retresco.de",
-    url = "http://retresco.github.com/doppler",
+    author_email = "truemped@googlemail.com",
+    url = "http://truemped.github.com/doppler",
     packages = find_packages(),
     include_package_data = True,
     install_requires = [
