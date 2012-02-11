@@ -46,14 +46,17 @@ class FilterQuery(BaseQuery):
     A `FilterQuery`.
     """
 
-    def __init__(self, query):
+    def __init__(self, query, tag=None):
         """
         Set the query value.
         """
         self.__query = query
+        self.__tag = tag
 
     def get_params(self):
         """
         Return the list of query params.
         """
+        if self.__tag:
+            return [('fq', '{!tag=%s}%s' % (self.__tag, self.__query))]
         return [('fq', self.__query)]
