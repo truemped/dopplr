@@ -1,5 +1,6 @@
 # vim: set fileencoding=utf-8 :
 #
+# Copyright (c) 2012 Retresco GmbH
 # Copyright (c) 2011 Daniel Truemper <truemped at googlemail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
