@@ -7,7 +7,7 @@
 from setuptools import setup, find_packages
 
 
-tests_require = ['tornado-pyvows>=0.3.1']
+tests_require = ['coverage', 'tornado-pyvows>=0.3.1']
 
 
 setup(
