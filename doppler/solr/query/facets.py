@@ -25,7 +25,7 @@ from doppler.basequery import BaseQuery
 from doppler.solr.query.query import FilterQuery
 
 
-class FacetQuery(BaseQuery):
+class FacetFieldQuery(BaseQuery):
     """
     The simple `FacetQuery` for facetting a field.
     """
@@ -79,7 +79,7 @@ class FacetQuery(BaseQuery):
         return params
 
 
-class MultiselectFacetQuery(FacetQuery):
+class MultiselectFacetQuery(FacetFieldQuery):
     """
     Use the `MultiselectFacetQuery` if you want the facet field to be
     calculated even though there is a `FilterQuery` on this field.
@@ -164,5 +164,27 @@ class RangeFacetQuery(BaseQuery):
             else:
                 params.extend(FilterQuery(
                     '%s:%s' % (self.__field, self.__value)).get_params())
+
+        return params
+
+
+class FacetQueryQuery(BaseQuery):
+    """
+    Query for facetting through a query
+    """
+
+    def __init__(self, query, excludeFqs=[]):
+
+        self.__query = query
+        self.__excludeFqs = excludeFqs
+
+    def get_params(self):
+
+        params = []
+        params.append(('facet', 'true'))
+        query = self.__query
+        if len(self.__excludeFqs) > 0:
+            query = '{!ex=%s}%s' % (','.join(self.__excludeFqs), self.__query)
+        params.append(('facet.query', query))
 
         return params

@@ -19,11 +19,22 @@
 """
 The implementations for Apache Solr queries.
 """
-from .facets import FacetQuery, MultiselectFacetQuery, RangeFacetQuery
+from .facets import FacetFieldQuery
+from .facets import FacetQueryQuery
+from .facets import MultiselectFacetQuery
+from .facets import RangeFacetQuery
 from .mlt import MoreLikeThisQuery
 from .paging import Paging
 from .query import Query, FilterQuery
 
 
-__all__ = ['FacetQuery', 'MultiselectFacetQuery', 'RangeFacetQuery',
-    'MoreLikeThisQuery', 'Paging', 'Query', 'FilterQuery']
+__all__ = [
+    'FacetFieldQuery',
+    'FacetQueryQuery',
+    'MultiselectFacetQuery',
+    'RangeFacetQuery',
+    'MoreLikeThisQuery',
+    'Paging',
+    'Query',
+    'FilterQuery',
+]

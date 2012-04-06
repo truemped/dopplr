@@ -18,7 +18,8 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query.facets import FacetQuery
+from doppler.solr.query.facets import FacetFieldQuery
+from doppler.solr.query.facets import FacetQueryQuery
 from doppler.solr.query.facets import MultiselectFacetQuery
 from doppler.solr.query.facets import RangeFacetQuery
 
@@ -29,7 +30,7 @@ class FacettingQueries(Vows.Context):
     class WithASimpleFacet(Vows.Context):
 
         def topic(self):
-            q = FacetQuery('foo')
+            q = FacetFieldQuery('foo')
             return q.get_params()
 
         def facetTrueMustBePresent(self, topic):
@@ -44,7 +45,7 @@ class FacettingQueries(Vows.Context):
     class WithAMinCountParameter(WithASimpleFacet):
 
         def topic(self):
-            q = FacetQuery('foo', mincount=1)
+            q = FacetFieldQuery('foo', mincount=1)
             return q.get_params()
 
         def theNumberOfParamsMatches(self, topic):
@@ -56,7 +57,7 @@ class FacettingQueries(Vows.Context):
     class WithAFacetValue(WithASimpleFacet):
 
         def topic(self):
-            q = FacetQuery('foo', value='bar')
+            q = FacetFieldQuery('foo', value='bar')
             return q.get_params()
 
         def theFilterQueryMustBeCreated(self, topic):
@@ -68,7 +69,7 @@ class FacettingQueries(Vows.Context):
     class WithAFacetValueAndWithoutATag(WithASimpleFacet):
 
         def topic(self):
-            q = FacetQuery('foo', value='bar', tag=False)
+            q = FacetFieldQuery('foo', value='bar', tag=False)
             return q.get_params()
 
         def theFilterQueryMustBeCreated(self, topic):
@@ -80,7 +81,7 @@ class FacettingQueries(Vows.Context):
     class WithASortParameter(WithAFacetValue):
 
         def topic(self):
-            q = FacetQuery('foo', value='bar', sort='count')
+            q = FacetFieldQuery('foo', value='bar', sort='count')
             return q.get_params()
 
         def theFacetsShouldBeSortedByCount(self, topic):
@@ -92,7 +93,7 @@ class FacettingQueries(Vows.Context):
     class WithMissingParams(WithAFacetValue):
 
         def topic(self):
-            q = FacetQuery('foo', value='bar', sort='count', missing=1)
+            q = FacetFieldQuery('foo', value='bar', sort='count', missing=1)
             return q.get_params()
 
         def theFacetsShouldBeSortedByCount(self, topic):
@@ -274,3 +275,28 @@ class ARangeFacetQuery(Vows.Context):
 
         def theOtherParamMatches(self, topic):
             expect(topic).to_include(('f.foo.facet.range.include', 'all'))
+
+
+@Vows.batch
+class AFacetQueryQuery(Vows.Context):
+
+    class WithRequireParams(Vows.Context):
+
+        def topic(self):
+            return FacetQueryQuery('title:Test').get_params()
+
+        def facetTrueMustBePresent(self, topic):
+            expect(topic).to_include(('facet', 'true'))
+
+        def facetQueryMustBeCorrect(self, topic):
+            expect(topic).to_include(('facet.query', 'title:Test'))
+
+    class WithExcludedFilterQueries(WithRequireParams):
+
+        def topic(self):
+            q = FacetQueryQuery('title:Test', excludeFqs=['test', 'tag'])
+            return q.get_params()
+
+        def facetQueryMustBeCorrect(self, topic):
+            expect(topic).to_include(('facet.query',
+                '{!ex=test,tag}title:Test'))
