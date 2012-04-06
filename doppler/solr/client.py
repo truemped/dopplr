@@ -207,8 +207,8 @@ class SolrClient(object):
         """
         Commit any pending changes within Solr.
         """
-        to_commit = {"commit": {} }
-        final_url = "%s" % self._update_url
+        to_commit = {}
+        final_url = "%s?commit=true" % self._update_url
 
         self._post(final_url, to_commit,
                 callback=handle_indexing_response(callback))
