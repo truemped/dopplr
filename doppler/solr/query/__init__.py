@@ -25,6 +25,7 @@ from .facets import FacetFieldQuery
 from .facets import FacetQueryQuery
 from .facets import MultiselectFacetQuery
 from .facets import RangeFacetQuery
+from .highlighting import Highlighting
 from .mlt import MoreLikeThisQuery
 from .paging import Paging
 from .query import Query, FilterQuery
@@ -35,6 +36,7 @@ __all__ = [
     'BoostFunctionQuery',
     'FacetFieldQuery',
     'FacetQueryQuery',
+    'Highlighting',
     'MultiselectFacetQuery',
     'RangeFacetQuery',
     'MoreLikeThisQuery',
