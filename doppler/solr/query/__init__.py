@@ -19,6 +19,8 @@
 """
 The implementations for Apache Solr queries.
 """
+from .boostquery import BoostQuery
+from .boostquery import BoostFunctionQuery
 from .facets import FacetFieldQuery
 from .facets import FacetQueryQuery
 from .facets import MultiselectFacetQuery
@@ -29,6 +31,8 @@ from .query import Query, FilterQuery
 
 
 __all__ = [
+    'BoostQuery',
+    'BoostFunctionQuery',
     'FacetFieldQuery',
     'FacetQueryQuery',
     'MultiselectFacetQuery',
