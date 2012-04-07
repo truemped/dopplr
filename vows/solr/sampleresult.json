@@ -1,0 +1,102 @@
+{
+    "facet_counts": {
+        "facet_ranges": {
+            "index_date": {
+                "start": "2011-11-11T21:13:19.903Z", 
+                "counts": [
+                    "2011-11-11T21:13:19.903Z", 
+                    0, 
+                    "2011-11-18T21:13:19.903Z", 
+                    0, 
+                    "2011-11-25T21:13:19.903Z", 
+                    0, 
+                    "2011-12-02T21:13:19.903Z", 
+                    0, 
+                    "2011-12-09T21:13:19.903Z", 
+                    0, 
+                    "2011-12-16T21:13:19.903Z", 
+                    0, 
+                    "2011-12-23T21:13:19.903Z", 
+                    0, 
+                    "2011-12-30T21:13:19.903Z", 
+                    0, 
+                    "2012-01-06T21:13:19.903Z", 
+                    0, 
+                    "2012-01-13T21:13:19.903Z", 
+                    0, 
+                    "2012-01-20T21:13:19.903Z", 
+                    0, 
+                    "2012-01-27T21:13:19.903Z", 
+                    0, 
+                    "2012-02-03T21:13:19.903Z", 
+                    0, 
+                    "2012-02-10T21:13:19.903Z", 
+                    2
+                ], 
+                "end": "2012-02-17T21:13:19.903Z", 
+                "gap": "+7DAY"
+            }
+        }, 
+        "facet_fields": {
+            "tags": [
+                "foo", 
+                1, 
+                "bar", 
+                2,
+                "foobar", 
+                2
+            ], 
+            "country": [
+                "USA", 
+                2
+            ]
+        }, 
+        "facet_dates": {}, 
+        "facet_queries": {}
+    }, 
+    "responseHeader": {
+        "status": 0, 
+        "QTime": 10
+    }, 
+    "response": {
+        "start": 0, 
+        "numFound": 2, 
+        "docs": [
+            {
+                "tags": [
+                    "foo"
+                ],
+                "country": "USA",
+                "data": "lorem ipsum"
+            }, 
+            {
+                "tags": [
+                    "bar"
+                ],
+                "country": "USA",
+                "data": "lorem ipsum"
+            }, 
+            {
+                "tags": [
+                    "bar"
+                ],
+                "country": "USA",
+                "data": "lorem ipsum"
+            }, 
+            {
+                "tags": [
+                    "foobar"
+                ],
+                "country": "USA",
+                "data": "lorem ipsum"
+            }, 
+            {
+                "tags": [
+                    "foobar"
+                ],
+                "country": "USA",
+                "data": "lorem ipsum"
+            }
+        ]
+    }
+}
