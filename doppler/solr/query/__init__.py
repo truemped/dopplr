@@ -29,6 +29,7 @@ from .highlighting import Highlighting
 from .mlt import MoreLikeThisQuery
 from .paging import Paging
 from .query import Query, FilterQuery
+from .spellcheck import Spellcheck
 
 
 __all__ = [
