@@ -30,6 +30,7 @@ from .mlt import MoreLikeThisQuery
 from .paging import Paging
 from .query import Query, FilterQuery
 from .spellcheck import Spellcheck
+from .spatial import SpatialQuery
 
 
 __all__ = [
@@ -45,4 +46,5 @@ __all__ = [
     'Query',
     'FilterQuery',
     'Spellcheck',
+    'SpatialQuery',
 ]
