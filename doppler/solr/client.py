@@ -31,7 +31,7 @@ __all__ = ['SolrClient']
 log = logging.getLogger('solr')
 
 
-def handle_search_response(self, query, callback):
+def handle_search_response(query, callback):
     """
     Closure for handling the search response.
     """
@@ -54,7 +54,7 @@ def handle_search_response(self, query, callback):
     return inner_callback
 
 
-def default_document_verifier(self, doc):
+def default_document_verifier(doc):
     """
     By default we try to index the document.
 
@@ -64,7 +64,7 @@ def default_document_verifier(self, doc):
     return {'ok': 'true'}
 
 
-def handle_indexing_response(self, callback=None):
+def handle_indexing_response(callback=None):
     """
     Handle the solr indexing or commit response.
     The `callback` to be called with the result being either::
