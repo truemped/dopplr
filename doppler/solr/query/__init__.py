@@ -44,4 +44,5 @@ __all__ = [
     'Paging',
     'Query',
     'FilterQuery',
+    'Spellcheck',
 ]
