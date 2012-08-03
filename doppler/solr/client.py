@@ -182,7 +182,8 @@ class SolrClient(object):
         self._get(final_url, headers=querybuilder.headers,
             callback=self._handle_search_response(querybuilder, callback))
 
-    def index_document(self, doc, callback=None, commit=False):
+    def index_document(self, doc, callback=None, commit=False,
+                       commitWithin=None, overwrite=None, boost=None):
         """
         Index a `doc` into Solr. The `callback` will be called from within
         `self._handle_indexing_response`. If `commit is True`, then a `commit`
@@ -191,14 +192,21 @@ class SolrClient(object):
         verification = self._document_verifier(doc)
         if 'error' in verification:
             callback({'error': 'document refused', 'reason': verification,
-                'doc': doc})
+                      'doc': doc})
             return
 
         to_index = {'add': {'doc': doc}}
+        if boost:
+            to_index['add']['boost'] = boost
+
+        params = []
+        if commitWithin:
+            params.append(('commitWithin', str(commitWithin)))
+        if overwrite:
+            params.append(('overwrite', str(overwrite)))
         if commit:
-            final_url = "%s?commit=true" % self._update_url
-        else:
-            final_url = self._update_url
+            params.append(('commit', 'true'))
+        final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
 
         self._post(final_url, to_index,
                 callback=handle_indexing_response(callback))
