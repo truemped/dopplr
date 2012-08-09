@@ -19,6 +19,7 @@
 import logging
 import json
 import urllib
+import types
 
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 from tornado.httputil import HTTPHeaders
@@ -174,13 +175,13 @@ class SolrClient(object):
         if interestingTerms:
             query_params.append(('mlt.interestingTerms', interestingTerms))
 
-        self.log.debug('MoreLikeThis with params: %s' % query_params)
+        log.debug('MoreLikeThis with params: %s' % query_params)
         qs = urllib.urlencode(query_params)
         final_url = '?'.join([self._mlt_url, qs])
-        self.log.debug('Final MLT URL: %s' % final_url)
+        log.debug('Final MLT URL: %s' % final_url)
 
         self._get(final_url, headers=querybuilder.headers,
-            callback=self._handle_search_response(querybuilder, callback))
+            callback=_handle_search_response(querybuilder, callback))
 
     def index_document(self, doc, callback=None, commit=False,
                        commitWithin=None, overwrite=None, boost=None):
