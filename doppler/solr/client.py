@@ -203,8 +203,9 @@ class SolrClient(object):
         params = []
         if commitWithin:
             params.append(('commitWithin', str(commitWithin)))
-        if overwrite:
-            params.append(('overwrite', 'true'))
+        if overwrite is not None:
+            if not overwrite:
+                params.append(('overwrite', 'false'))
         if commit:
             params.append(('commit', 'true'))
         final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
