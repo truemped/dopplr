@@ -181,7 +181,7 @@ class SolrClient(object):
         log.debug('Final MLT URL: %s' % final_url)
 
         self._get(final_url, headers=querybuilder.headers,
-            callback=_handle_search_response(querybuilder, callback))
+            callback=handle_search_response(querybuilder, callback))
 
     def index_document(self, doc, callback=None, commit=False,
                        commitWithin=None, overwrite=None, boost=None):
