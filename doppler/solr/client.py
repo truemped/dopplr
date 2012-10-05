@@ -111,7 +111,8 @@ class SolrClient(object):
         if len([k for (k,v) in self._required_query_params if k=="wt"]) == 0:
             self._required_query_params.append(('wt', 'json'))
 
-        self._document_verifier = document_verifier
+        self._document_verifier = document_verifier or \
+            default_document_verifier
 
         self._default_headers = HTTPHeaders()
         if default_headers:
