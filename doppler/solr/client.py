@@ -96,7 +96,7 @@ class SolrClient(object):
     def __init__(self, search_host, update_host=None, default_headers=None,
             required_query_params=[], client_args={}, select_path='/select',
             update_path='/update/json', mlt_path='/mlt',
-            document_verifier=None, ioloop=None):
+            suggest_path='/suggest', document_verifier=None, ioloop=None):
         """
         Initialize me.
         """
@@ -104,6 +104,7 @@ class SolrClient(object):
 
         self._search_url = '%s%s' % (search_host, select_path)
         self._mlt_url = '%s%s' % (search_host, mlt_path)
+        self._termsuggest_url = '%s%s' % (search_host, suggest_path)
         uhost = update_host or search_host
         self._update_url = '%s%s' % (uhost, update_path)
 
@@ -142,14 +143,19 @@ class SolrClient(object):
             body=json.dumps(body))
         self._client.fetch(request, callback)
 
-    def search(self, querybuilder, callback=None):
-        """
-        Search the Solr with `querybuilder.get_params()` as query parameter.
-        """
+    def _get_params(self, querybuilder):
         query_params = querybuilder.get_params()
         for p in self._required_query_params:
             if p not in query_params:
                 query_params.append(p)
+
+        return query_params
+
+    def search(self, querybuilder, callback=None):
+        """
+        Search the Solr with `querybuilder.get_params()` as query parameter.
+        """
+        query_params = self._get_params(querybuilder)
 
         log.debug('Searching solr with params: %s' % query_params)
         qs = urllib.urlencode(query_params)
@@ -164,10 +170,7 @@ class SolrClient(object):
         """
         `interestingTerms` can be one of: 'list', 'details', 'none'.
         """
-        query_params = querybuilder.get_params()
-        for p in self._required_query_params:
-            if p not in query_params:
-                query_params.append(p)
+        query_params = self._get_params(querybuilder)
 
         if match_include and isinstance(match_include, types.BooleanType):
             query_params.append(('mlt.match.include', str(match_include).lower()))
@@ -180,6 +183,20 @@ class SolrClient(object):
         qs = urllib.urlencode(query_params)
         final_url = '?'.join([self._mlt_url, qs])
         log.debug('Final MLT URL: %s' % final_url)
+
+        self._get(final_url, headers=querybuilder.headers,
+            callback=handle_search_response(querybuilder, callback))
+
+    def term_suggest(self, querybuilder, callback=None):
+        """
+        simple query against the /term_suggest requesthandler from solr.
+        """
+        query_params = self._get_params(querybuilder)
+
+        self.log.debug('term_suggest with params: %s' % query_params)
+        qs = urllib.urlencode(query_params)
+        final_url = '?'.join([self._termsuggest_url, qs])
+        self.log.debug('Final suggest URL: %s' % final_url)
 
         self._get(final_url, headers=querybuilder.headers,
             callback=handle_search_response(querybuilder, callback))
