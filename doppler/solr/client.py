@@ -193,10 +193,10 @@ class SolrClient(object):
         """
         query_params = self._get_params(querybuilder)
 
-        self.log.debug('term_suggest with params: %s' % query_params)
+        log.debug('term_suggest with params: %s' % query_params)
         qs = urllib.urlencode(query_params)
         final_url = '?'.join([self._termsuggest_url, qs])
-        self.log.debug('Final suggest URL: %s' % final_url)
+        log.debug('Final suggest URL: %s' % final_url)
 
         self._get(final_url, headers=querybuilder.headers,
             callback=handle_search_response(querybuilder, callback))
