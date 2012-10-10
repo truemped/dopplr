@@ -153,16 +153,25 @@ class SolrClient(object):
 
     def search(self, querybuilder, callback=None):
         """
-        Search the Solr with `querybuilder.get_params()` as query parameter.
+        Search the Solr with `querybuilder.get_params()` as query parameters.
+        Use GET by default, but switch to POST in case of very long urls.
         """
         query_params = self._get_params(querybuilder)
 
         log.debug('Searching solr with params: %s' % query_params)
         qs = urllib.urlencode(query_params)
+
         final_url = "?".join([self._search_url, qs])
+        # use POST if the final url is very long
+        final_url, use_post = (self._search_url, True) if len(final_url) > 2000 \
+                                                    else (final_url, False)
         log.debug('Final search URL: %s' % final_url)
 
-        self._get(final_url, headers=querybuilder.headers,
+        if use_post:
+            self._post(final_url, qs, headers=querybuilder.headers,
+                callback=handle_search_response(querybuilder, callback))
+        else:
+            self._get(final_url, headers=querybuilder.headers,
                 callback=handle_search_response(querybuilder, callback))
 
     def more_like_this(self, querybuilder, callback=None, match_include=True,
