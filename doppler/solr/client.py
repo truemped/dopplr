@@ -45,12 +45,8 @@ def handle_search_response(query, callback):
             return
 
         numFound = result['response']['numFound']
-        if numFound == 0:
-            log.info('Search returned zero results')
-            callback({'error': 'not_found'})
-        else:
-            log.info('Search returned "%s" results' % numFound)
-            callback(query.response_mapper(result))
+        log.info('Search returned "%s" results' % numFound)
+        callback(query.response_mapper(result))
 
     return inner_callback
 
