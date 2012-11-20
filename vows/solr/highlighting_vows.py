@@ -17,7 +17,7 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query import Highlighting
+from dopplr.solr.query import Highlighting
 
 
 @Vows.batch

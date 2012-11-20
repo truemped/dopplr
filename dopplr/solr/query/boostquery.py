@@ -18,7 +18,7 @@
 """
 Solr Boost Query
 """
-from doppler.basequery import BaseQuery
+from dopplr.basequery import BaseQuery
 
 
 class BoostQuery(BaseQuery):

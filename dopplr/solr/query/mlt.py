@@ -18,7 +18,7 @@
 #
 import types
 
-from doppler.basequery import BaseQuery
+from dopplr.basequery import BaseQuery
 
 
 class MoreLikeThisQuery(BaseQuery):

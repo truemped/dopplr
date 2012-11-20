@@ -18,7 +18,7 @@
 """
 Solr result snippet highlighting.
 """
-from doppler.basequery import BaseQuery
+from dopplr.basequery import BaseQuery
 
 
 class Highlighting(BaseQuery):

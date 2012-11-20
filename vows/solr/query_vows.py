@@ -18,8 +18,8 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query.query import Query
-from doppler.solr.query.query import FilterQuery
+from dopplr.solr.query.query import Query
+from dopplr.solr.query.query import FilterQuery
 
 
 @Vows.batch

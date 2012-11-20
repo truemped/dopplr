@@ -17,7 +17,7 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query import Spellcheck
+from dopplr.solr.query import Spellcheck
 
 
 @Vows.batch

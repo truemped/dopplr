@@ -17,8 +17,8 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query import BoostQuery
-from doppler.solr.query import BoostFunctionQuery
+from dopplr.solr.query import BoostQuery
+from dopplr.solr.query import BoostFunctionQuery
 
 
 @Vows.batch

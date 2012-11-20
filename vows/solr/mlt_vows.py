@@ -18,7 +18,7 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query.mlt import MoreLikeThisQuery
+from dopplr.solr.query.mlt import MoreLikeThisQuery
 
 
 @Vows.batch

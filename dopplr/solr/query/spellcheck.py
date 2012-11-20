@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 #
-from doppler.basequery import BaseQuery
+from dopplr.basequery import BaseQuery
 
 
 class Spellcheck(BaseQuery):

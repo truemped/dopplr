@@ -17,7 +17,7 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query import SpatialQuery
+from dopplr.solr.query import SpatialQuery
 
 
 @Vows.batch

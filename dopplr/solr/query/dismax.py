@@ -21,7 +21,7 @@ The Solr (e)DisMax query.
 
 For more information see: http://wiki.apache.org/solr/DisMaxQParserPlugin
 """
-from doppler.basequery import BaseQuery
+from dopplr.basequery import BaseQuery
 
 
 class DisMax(BaseQuery):

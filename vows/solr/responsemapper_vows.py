@@ -20,7 +20,7 @@ import json
 
 from pyvows import Vows, expect
 
-from doppler.solr.responsemapper import detailed_response_mapper
+from dopplr.solr.responsemapper import detailed_response_mapper
 
 
 with open(os.path.join(os.path.dirname(__file__), 'sampleresult.json')) as f:

@@ -19,8 +19,8 @@
 """
 The `QueryBuilder` creating Apache Solr queries.
 """
-from doppler.basequery import BaseQuery
-from doppler.solr.query import Query
+from dopplr.basequery import BaseQuery
+from dopplr.solr.query import Query
 
 
 class TooManyQs(Exception):

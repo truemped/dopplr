@@ -21,8 +21,8 @@ Facet queries for Apache Solr.
 
 See http://wiki.apache.org/solr/SimpleFacetParameters for details.
 """
-from doppler.basequery import BaseQuery
-from doppler.solr.query.query import FilterQuery
+from dopplr.basequery import BaseQuery
+from dopplr.solr.query.query import FilterQuery
 
 
 class FacetFieldQuery(BaseQuery):

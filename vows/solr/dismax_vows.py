@@ -18,7 +18,7 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query.dismax import DisMax
+from dopplr.solr.query.dismax import DisMax
 
 
 @Vows.batch

@@ -20,7 +20,7 @@
 The basic queries for Apache Solr. Here we implement the simple `Query` as well
 as the `FilterQuery`.
 """
-from doppler.basequery import BaseQuery
+from dopplr.basequery import BaseQuery
 
 
 class Query(BaseQuery):

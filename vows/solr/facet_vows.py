@@ -18,10 +18,10 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query.facets import FacetFieldQuery
-from doppler.solr.query.facets import FacetQueryQuery
-from doppler.solr.query.facets import MultiselectFacetQuery
-from doppler.solr.query.facets import RangeFacetQuery
+from dopplr.solr.query.facets import FacetFieldQuery
+from dopplr.solr.query.facets import FacetQueryQuery
+from dopplr.solr.query.facets import MultiselectFacetQuery
+from dopplr.solr.query.facets import RangeFacetQuery
 
 
 @Vows.batch

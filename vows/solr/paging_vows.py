@@ -18,7 +18,7 @@
 #
 from pyvows import Vows, expect
 
-from doppler.solr.query.paging import Paging
+from dopplr.solr.query.paging import Paging
 
 
 @Vows.batch
