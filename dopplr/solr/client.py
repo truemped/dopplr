@@ -32,22 +32,33 @@ __all__ = ['SolrClient']
 log = logging.getLogger('solr')
 
 
+def try_json(response, callback):
+    try:
+        return json.loads(response.body)
+    except TypeError:
+        log.error('Error searching solr: %s' % response.body)
+        callback({'error': 'no_json', 'result': response.body})
+
+
 def handle_search_response(query, callback):
     """
     Closure for handling the search response.
     """
     def inner_callback(response):
-        try:
-            result = json.loads(response.body)
-        except TypeError:
-            log.error('Error searching solr: %s' % response.body)
-            callback({'error': 'no_json', 'result': response.body})
-            return
-
+        result = try_json(response, callback)
         numFound = result['response']['numFound']
         log.info('Search returned "%s" results' % numFound)
         callback(query.response_mapper(result))
+    return inner_callback
 
+
+def handle_suggest_response(query, callback):
+    """
+    Closure for handling the suggest response.
+    """
+    def inner_callback(response):
+        result = try_json(response, callback)
+        callback(query.response_mapper(result))
     return inner_callback
 
 
@@ -204,7 +215,7 @@ class SolrClient(object):
         log.debug('Final suggest URL: %s' % final_url)
 
         self._get(final_url, headers=querybuilder.headers,
-            callback=handle_search_response(querybuilder, callback))
+            callback=handle_suggest_response(querybuilder, callback))
 
     def index_document(self, doc, callback=None, commit=False,
                        commitWithin=None, overwrite=None, boost=None):
