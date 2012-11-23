@@ -17,5 +17,5 @@
 #
 #
 """
-This is doppler.
+This is dopplr.
 """
