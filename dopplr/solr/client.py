@@ -257,7 +257,8 @@ class SolrClient(object):
         self._post(final_url, to_commit,
                 callback=handle_indexing_response(callback))
 
-    def remove_by_id(self, doc_id, callback=None, commit=False):
+    def remove_by_id(self, doc_id, callback=None, commit=False,
+            commitWithin=None):
         """
         Remove the document with id `doc_id`.
 
@@ -267,15 +268,18 @@ class SolrClient(object):
         """
         to_remove = {'delete': {'id': doc_id}}
 
+        params = []
+        if commitWithin:
+            params.append(('commitWithin', str(commitWithin)))
         if commit:
-            final_url = "%s?commit=true" % self._update_url
-        else:
-            final_url = self._update_url
+            params.append(('commit', 'true'))
+        final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
 
         self._post(final_url, to_remove,
                 callback=handle_indexing_response(callback))
 
-    def remove_by_query(self, query, callback=None, commit=False):
+    def remove_by_query(self, query, callback=None, commit=False,
+            commitWithin=None):
         """
         Remote any documents matching the given query.
 
@@ -283,10 +287,12 @@ class SolrClient(object):
         """
         to_remove = {'delete': {'query': query}}
 
+        params = []
+        if commitWithin:
+            params.append(('commitWithin', str(commitWithin)))
         if commit:
-            final_url = "%s?commit=true" % self._update_url
-        else:
-            final_url = self._update_url
+            params.append(('commit', 'true'))
+        final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
 
         self._post(final_url, to_remove,
                 callback=handle_indexing_response(callback))
