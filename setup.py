@@ -12,7 +12,7 @@ tests_require = ['coverage', 'tornado-pyvows>=0.5.0']
 
 setup(
     name = "dopplr",
-    version = "0.8.2",
+    version = "0.8.3",
     description = "Dopplr is a Tornado based client library for Solr and ElasticSearch",
     author = "Daniel Truemper",
     author_email = "truemped@googlemail.com",
