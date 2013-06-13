@@ -76,6 +76,16 @@ class QueryBuilder(object):
         """
         self.__params.append(param)
 
+    def add_params(self, params):
+        """
+        Directly add a parameter list to the `QueryBuilder`. This is intended
+        for stuff like `dismax` parametrization etc.
+
+        `params` needs to be a list of tuples of the form::
+            (name, value)
+        """
+        self.__params.extend(params)
+
     def add(self, query):
         """
         Add a query objet to the `QueryBuilder`.
