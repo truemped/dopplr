@@ -86,11 +86,21 @@ def handle_indexing_response(callback=None):
     in case of success.
     """
     def inner_callback(response):
-        solr = response.body
-        if not solr or "ERROR" in solr:
-            callback({'error': 'not_indexed', 'response': response})
-        else:
-            callback({'ok': True})
+        # since solr 4.X, we can actually json load the response; to remain
+        # backwards compatible, we just add several keys to our response
+        try:
+            solr = json.loads(response.body)
+            if "error" in solr:
+                callback({'error': 'not_indexed', 'reason': solr['error'],
+                    'code': solr["code"], 'response': response})
+                return
+        except TypeError:
+            solr = response.body
+            if not solr or "ERROR" in solr:
+                callback({'error': 'not_indexed', 'response': response})
+                return
+
+        callback({'ok': True})
 
     return inner_callback
 
@@ -218,7 +228,8 @@ class SolrClient(object):
             callback=handle_suggest_response(querybuilder, callback))
 
     def index_document(self, doc, callback=None, commit=False,
-                       commitWithin=None, overwrite=None, boost=None):
+                       commitWithin=None, softCommit=None, overwrite=None,
+                       boost=None):
         """
         Index a `doc` into Solr. The `callback` will be called from within
         `self._handle_indexing_response`. If `commit is True`, then a `commit`
@@ -242,6 +253,8 @@ class SolrClient(object):
                 params.append(('overwrite', 'false'))
         if commit:
             params.append(('commit', 'true'))
+        if softCommit:
+            params.append(('softCommit', 'true'))
         final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
 
         self._post(final_url, to_index,
@@ -258,7 +271,7 @@ class SolrClient(object):
                 callback=handle_indexing_response(callback))
 
     def remove_by_id(self, doc_id, callback=None, commit=False,
-            commitWithin=None):
+            commitWithin=None, softCommit=None):
         """
         Remove the document with id `doc_id`.
 
@@ -273,13 +286,15 @@ class SolrClient(object):
             params.append(('commitWithin', str(commitWithin)))
         if commit:
             params.append(('commit', 'true'))
+        if softCommit:
+            params.append(('softCommit', 'true'))
         final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
 
         self._post(final_url, to_remove,
                 callback=handle_indexing_response(callback))
 
     def remove_by_query(self, query, callback=None, commit=False,
-            commitWithin=None):
+            commitWithin=None, softCommit=None):
         """
         Remote any documents matching the given query.
 
@@ -292,6 +307,8 @@ class SolrClient(object):
             params.append(('commitWithin', str(commitWithin)))
         if commit:
             params.append(('commit', 'true'))
+        if softCommit:
+            params.append(('softCommit', 'true'))
         final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
 
         self._post(final_url, to_remove,
