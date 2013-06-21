@@ -17,6 +17,8 @@
 #
 from pyvows import Vows, expect
 
+from dopplr.solr.query import BoundingBoxSpatialQuery
+from dopplr.solr.query import GeofiltSpatialQuery
 from dopplr.solr.query import SpatialQuery
 
 
@@ -43,14 +45,13 @@ class TheSpatialQuery(Vows.Context):
         def mustIncludeSpatialFieldParameter(self, topic):
             expect(topic).to_include(('sfield', 'my_field'))
 
-    class WithBboxFunctionParameter(WithDefaultParams):
+    class WithBboxSpatialQuery(WithDefaultParams):
 
         def topic(self):
             lat = 0.0
             lon = 0.0
             sfield = "my_field"
-            return SpatialQuery(lat, lon, sfield,
-                function_type='bbox').get_params()
+            return BoundingBoxSpatialQuery(lat, lon, sfield).get_params()
 
         def mustIncludeFunctionTypeParameter(self, topic):
             expect(topic).to_include(('fq', '{!bbox}'))
@@ -61,7 +62,7 @@ class TheSpatialQuery(Vows.Context):
             lat = 0.0
             lon = 0.0
             sfield = "my_field"
-            return SpatialQuery(lat, lon, sfield,
+            return GeofiltSpatialQuery(lat, lon, sfield,
                 distance=10).get_params()
 
         def mustIncludeDistanceParameter(self, topic):

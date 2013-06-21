@@ -25,7 +25,7 @@ class SpatialQuery(BaseQuery):
     param lat the latitute point part
     param lon the lontitude point part
     param sfield the location type field
-    param function_type is one of {geofilt, bbox, geodist}
+    param function_type is one of {geofilt, bbox}
     param distance the radius around the given location
     """
     def __init__(self, lat, lon, sfield, function_type='geofilt', distance=5):
@@ -43,3 +43,29 @@ class SpatialQuery(BaseQuery):
         params.append(('pt', '%s,%s' % (self.__lat, self.__lon)))
         params.append(('d', self.__distance))
         return params
+
+
+class GeofiltSpatialQuery(SpatialQuery):
+    """
+    `GeofiltSpatialQuery` to search with geofilt functionality
+    param lat the latitute point part
+    param lon the lontitude point part
+    param sfield the location type field
+    param distance the radius around the given location
+    """
+    def __init__(self, lat, lon, sfield, distance=5):
+        super(GeofiltSpatialQuery, self).__init__(lat, lon, sfield,
+            function_type='geofilt', distance=distance)
+
+
+class BoundingBoxSpatialQuery(SpatialQuery):
+    """
+    `BoundingBoxSpatialQuery` to search with bbox functionality
+    param lat the latitute point part
+    param lon the lontitude point part
+    param sfield the location type field
+    param distance the radius around the given location
+    """
+    def __init__(self, lat, lon, sfield, distance=5):
+        super(BoundingBoxSpatialQuery, self).__init__(lat, lon, sfield,
+            function_type='bbox', distance=distance)

@@ -31,14 +31,18 @@ from .mlt import MoreLikeThisQuery
 from .paging import Paging
 from .query import Query, FilterQuery
 from .spellcheck import Spellcheck
+from .spatial import BoundingBoxSpatialQuery
+from .spatial import GeofiltSpatialQuery
 from .spatial import SpatialQuery
 
 
 __all__ = [
     'BoostQuery',
     'BoostFunctionQuery',
+    'BoundingBoxSpatialQuery',
     'FacetFieldQuery',
     'FacetQueryQuery',
+    'GeofiltSpatialQuery',
     'Highlighting',
     'MultiselectFacetQuery',
     'RangeFacetQuery',
