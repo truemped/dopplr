@@ -25,6 +25,7 @@ from .facets import FacetFieldQuery
 from .facets import FacetQueryQuery
 from .facets import MultiselectFacetQuery
 from .facets import RangeFacetQuery
+from .grouping import ResultGrouping
 from .highlighting import Highlighting
 from .mlt import MoreLikeThisQuery
 from .paging import Paging
@@ -45,6 +46,7 @@ __all__ = [
     'Paging',
     'Query',
     'FilterQuery',
+    'ResultGrouping',
     'Spellcheck',
     'SpatialQuery',
 ]
