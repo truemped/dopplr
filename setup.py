@@ -4,7 +4,7 @@
 # setup.py 01-Apr-2011
 #
 #
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 tests_require = ['coverage', 'tornado-pyvows>=0.5.0']
@@ -12,12 +12,12 @@ tests_require = ['coverage', 'tornado-pyvows>=0.5.0']
 
 setup(
     name = "dopplr",
-    version = "0.8.3",
+    version = "0.9.0-alpha",
     description = "Dopplr is a Tornado based client library for Solr and ElasticSearch",
     author = "Daniel Truemper",
     author_email = "truemped@googlemail.com",
     url = "http://truemped.github.com/dopplr",
-    packages = find_packages(),
+    packages = ['dopplr', 'dopplr.solr', 'dopplr.solr.query'],
     include_package_data = True,
     install_requires = [
         'tornado>=2.1',
