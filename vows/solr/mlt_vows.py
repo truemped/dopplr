@@ -68,3 +68,20 @@ class MoreLikeThisQueries(Vows.Context):
 
         def theQueryMustMatch(self, (field, params)):
             expect(params).to_include(('mlt.%s' % field, 'a'))
+
+    class WithAStreamBody(Vows.Context):
+
+        def topic(self):
+            return MoreLikeThisQuery(['content'], stream_body="b").get_params()
+
+        def mltOnMustBePresent(self, topic):
+            expect(topic).to_include(('mlt', 'true'))
+
+        def mltFieldsMustBeCorrect(self, topic):
+            expect(topic).to_include(('mlt.fl', 'content'))
+
+        def theNumberOfParamsMatches(self, topic):
+            expect(topic).to_length(3)
+
+        def theQueryMustMatch(self, topic):
+            expect(topic).to_include(('stream.body', 'b'))

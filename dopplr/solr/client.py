@@ -208,10 +208,17 @@ class SolrClient(object):
         log.debug('MoreLikeThis with params: %s' % query_params)
         qs = urllib.urlencode(query_params)
         final_url = '?'.join([self._mlt_url, qs])
+
+        final_url, use_post = (self._search_url, True) if len(final_url) > 2000 \
+                                                    else (final_url, False)
         log.debug('Final MLT URL: %s' % final_url)
 
-        self._get(final_url, headers=querybuilder.headers,
-            callback=handle_search_response(querybuilder, callback))
+        if use_post:
+            self._post(final_url, qs, headers=querybuilder.headers,
+                callback=handle_search_response(querybuilder, callback))
+        else:
+            self._get(final_url, headers=querybuilder.headers,
+                callback=handle_search_response(querybuilder, callback))
 
     def term_suggest(self, querybuilder, callback=None):
         """

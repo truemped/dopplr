@@ -28,7 +28,8 @@ class MoreLikeThisQuery(BaseQuery):
     """
 
     def __init__(self, fields, mintf=None, mindf=None, minwl=None, maxwl=None,
-            maxqt=None, maxntp=None, boost=False, qf=None, count=None):
+            maxqt=None, maxntp=None, boost=False, qf=None, count=None,
+            stream_body=None):
         """
         `fields` is a list of field names the mlt is based on.
         """
@@ -45,6 +46,7 @@ class MoreLikeThisQuery(BaseQuery):
         self._optional_params['boost'] = boost
         self._optional_params['qf'] = qf
         self._optional_params['count'] = count
+        self.stream_body = stream_body
 
     def get_params(self):
         """
@@ -58,5 +60,8 @@ class MoreLikeThisQuery(BaseQuery):
             if self._optional_params[optional]:
                 params.append(('mlt.%s' % optional,
                     self._optional_params[optional]))
+
+        if self.stream_body:
+            params.append(('stream.body', self.stream_body))
 
         return params
