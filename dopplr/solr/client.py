@@ -155,9 +155,11 @@ class SolrClient(object):
         """
         h = headers or HTTPHeaders()
         h.update(self._default_headers)
-        h["Content-type"] = "application/json"
-        request = HTTPRequest(url, headers=h, method="POST",
-            body=json.dumps(body))
+        if type(body) == str:
+            body, h["Content-type"] = body, "application/x-www-form-urlencoded"
+        else:
+            body, h["Content-type"] = json.dumps(body), "application/json"
+        request = HTTPRequest(url, headers=h, method="POST", body=body)
         self._client.fetch(request, callback)
 
     def _get_params(self, querybuilder):
@@ -209,7 +211,7 @@ class SolrClient(object):
         qs = urllib.urlencode(query_params)
         final_url = '?'.join([self._mlt_url, qs])
 
-        final_url, use_post = (self._search_url, True) if len(final_url) > 2000 \
+        final_url, use_post = (self._mlt_url, True) if len(final_url) > 2000 \
                                                     else (final_url, False)
         log.debug('Final MLT URL: %s' % final_url)
 
