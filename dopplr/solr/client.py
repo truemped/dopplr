@@ -92,7 +92,7 @@ def handle_indexing_response(callback=None):
             solr = json.loads(response.body)
             if "error" in solr:
                 callback({'error': 'not_indexed', 'reason': solr['error'],
-                    'code': solr["code"], 'response': response})
+                    'code': solr["error"]["code"], 'response': response})
                 return
         except TypeError:
             solr = response.body
