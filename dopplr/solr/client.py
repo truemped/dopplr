@@ -39,13 +39,18 @@ def handle_search_response(query, callback):
     def inner_callback(response):
         try:
             result = json.loads(response.body)
-        except StandardError:
-            log.error('Error searching solr: %s' % response.body)
-            callback({'error': 'no_json', 'result': response.body})
+        except StandardError as e:
+            log.error('Error handling search response: %s - %s' % (str(e),
+                      response.body))
+            callback({'error': {'msg': str(e)}, 'result': response.body})
         else:
-            numFound = result['response']['numFound']
-            log.info('Search returned "%s" results' % numFound)
-            callback(query.response_mapper(result))
+            if "error" in result:
+                log.error('Error searching solr: %s' % response.body)
+                callback(result)
+            else:
+                numFound = result['response']['numFound']
+                log.info('Search returned "%s" results' % numFound)
+                callback(query.response_mapper(result))
     return inner_callback
 
 
@@ -56,11 +61,16 @@ def handle_suggest_response(query, callback):
     def inner_callback(response):
         try:
             result = json.loads(response.body)
-        except StandardError:
-            log.error('Error searching solr: %s' % response.body)
-            callback({'error': 'no_json', 'result': response.body})
+        except StandardError as e:
+            log.error('Error handling search response: %s - %s' % (str(e),
+                      response.body))
+            callback({'error': {'msg': str(e)}, 'result': response.body})
         else:
-            callback(query.response_mapper(result))
+            if "error" in result:
+                log.error('Error searching solr: %s' % response.body)
+                callback(result)
+            else:
+                callback(query.response_mapper(result))
     return inner_callback
 
 
