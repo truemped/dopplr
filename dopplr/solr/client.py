@@ -32,23 +32,20 @@ __all__ = ['SolrClient']
 log = logging.getLogger('solr')
 
 
-def try_json(response, callback):
-    try:
-        return json.loads(response.body)
-    except TypeError:
-        log.error('Error searching solr: %s' % response.body)
-        callback({'error': 'no_json', 'result': response.body})
-
-
 def handle_search_response(query, callback):
     """
     Closure for handling the search response.
     """
     def inner_callback(response):
-        result = try_json(response, callback)
-        numFound = result['response']['numFound']
-        log.info('Search returned "%s" results' % numFound)
-        callback(query.response_mapper(result))
+        try:
+            result = json.loads(response.body)
+        except StandardError:
+            log.error('Error searching solr: %s' % response.body)
+            callback({'error': 'no_json', 'result': response.body})
+        else:
+            numFound = result['response']['numFound']
+            log.info('Search returned "%s" results' % numFound)
+            callback(query.response_mapper(result))
     return inner_callback
 
 
@@ -57,8 +54,13 @@ def handle_suggest_response(query, callback):
     Closure for handling the suggest response.
     """
     def inner_callback(response):
-        result = try_json(response, callback)
-        callback(query.response_mapper(result))
+        try:
+            result = json.loads(response.body)
+        except StandardError:
+            log.error('Error searching solr: %s' % response.body)
+            callback({'error': 'no_json', 'result': response.body})
+        else:
+            callback(query.response_mapper(result))
     return inner_callback
 
 
@@ -94,7 +96,7 @@ def handle_indexing_response(callback=None):
                 callback({'error': 'not_indexed', 'reason': solr['error'],
                     'code': solr["error"]["code"], 'response': response})
                 return
-        except TypeError:
+        except StandardError:
             solr = response.body
             if not solr or "ERROR" in solr:
                 callback({'error': 'not_indexed', 'response': response})
