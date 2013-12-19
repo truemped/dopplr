@@ -279,7 +279,39 @@ class SolrClient(object):
         final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
 
         self._post(final_url, to_index,
-                callback=handle_indexing_response(callback))
+                   callback=handle_indexing_response(callback))
+
+    def index_documents(self, list_of_docs, callback=None, commit=False,
+                        commitWithin=None, softCommit=None, overwrite=None,
+                        boost=None):
+        """
+        Index a `list_of_docs` into Solr. Only available in Solr 4+.
+        """
+        error_reasons, error_docs = [], []
+        for doc in list_of_docs:
+            verification = self._document_verifier(doc)
+            if 'error' in verification:
+                error_reasons.append(verification)
+                error_docs.append(doc)
+        if error_reasons:
+            callback({'error': 'document(s) refused', 'reasons':
+                     list(error_reasons), 'docs': list(error_docs)})
+            return
+
+        params = []
+        if commitWithin:
+            params.append(('commitWithin', str(commitWithin)))
+        if overwrite is not None:
+            if not overwrite:
+                params.append(('overwrite', 'false'))
+        if commit:
+            params.append(('commit', 'true'))
+        if softCommit:
+            params.append(('softCommit', 'true'))
+        final_url = '%s?%s' % (self._update_url, urllib.urlencode(params))
+
+        self._post(final_url, list_of_docs,
+                   callback=handle_indexing_response(callback))
 
     def commit(self, callback=None):
         """
