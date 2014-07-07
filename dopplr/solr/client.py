@@ -25,6 +25,8 @@ from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 from tornado.httputil import HTTPHeaders
 from tornado.ioloop import IOLoop
 
+from .querybuilder import QueryBuilder
+
 
 __all__ = ['SolrClient']
 
@@ -124,7 +126,7 @@ class SolrClient(object):
 
     def __init__(self, search_host, update_host=None, default_headers=None,
             required_query_params=[], client_args={}, select_path='/select',
-            update_path='/update/json', mlt_path='/mlt',
+            update_path='/update/json', mlt_path='/mlt', get_path='/get',
             suggest_path='/suggest', document_verifier=None, ioloop=None):
         """
         Initialize me.
@@ -133,6 +135,7 @@ class SolrClient(object):
 
         self._search_url = '%s%s' % (search_host, select_path)
         self._mlt_url = '%s%s' % (search_host, mlt_path)
+        self._get_url = '%s%s' % (search_host, get_path)
         self._termsuggest_url = '%s%s' % (search_host, suggest_path)
         uhost = update_host or search_host
         self._update_url = '%s%s' % (uhost, update_path)
@@ -247,6 +250,22 @@ class SolrClient(object):
 
         self._get(final_url, headers=querybuilder.headers,
             callback=handle_suggest_response(querybuilder, callback))
+
+    def get_ids(self, ids, fields=None, response_mapper=None, callback=None):
+        """
+        Using the Solr 4.X realtime /get handler:
+        https://wiki.apache.org/solr/RealTimeGet
+        """
+        log.debug('realtime get with ids: %s' % ids)
+        params = [('ids', ','.join(map(unicode, ids)))]
+        if fields:
+            params.append(('fl', ','.join(fields)))
+        qs = urllib.urlencode(params)
+        final_url = '?'.join([self._get_url, qs])
+        log.debug('Final get URL: %s' % final_url)
+        qb = QueryBuilder(response_mapper=(response_mapper or (lambda x: x)))
+
+        self._get(final_url, callback=handle_search_response(qb, callback))
 
     def index_document(self, doc, callback=None, commit=False,
                        commitWithin=None, softCommit=None, overwrite=None,
